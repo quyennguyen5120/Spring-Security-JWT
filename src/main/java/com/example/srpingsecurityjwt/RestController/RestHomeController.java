@@ -35,23 +35,25 @@ public class RestHomeController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserEntity userEntity){
+        //Check loggin
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userEntity.getUsername(),
                         userEntity.getPassword()
                 )
         );
+        //Nếu thành công sẽ set vào context
         CustomDetailService customDetailService = (CustomDetailService) authentication.getPrincipal();
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(customDetailService);
         return ResponseEntity.ok(new LoginRespon(jwt));
     }
-//    @GetMapping("/add")
-//    public String addNewAccount(){
-//        UserEntity user = new UserEntity(null,"admin",passwordEncoder.encode("admin"), null);
-//        userRepository.save(user);
-//        return null;
-//    }
+    @GetMapping("/add")
+    public String addNewAccount(){
+        UserEntity user = new UserEntity(null,"admin",passwordEncoder.encode("admin"), null);
+        userRepository.save(user);
+        return null;
+    }
 
     @GetMapping("/auth/test")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})

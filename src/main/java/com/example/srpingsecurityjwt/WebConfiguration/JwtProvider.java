@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -17,8 +18,10 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    private final String JWT_SECRET = "quzxczxczxc";
-    private final int JWT_EXPIRATION = 604000000;
+    @Value("${jwt.SECRET_KEY}")
+    private String JWT_SECRET;
+    @Value("${jwt.JWT_EXPIRATION}")
+    private int JWT_EXPIRATION;
 
     public String generateToken(CustomDetailService customDetailService){
         Date now = new Date();
