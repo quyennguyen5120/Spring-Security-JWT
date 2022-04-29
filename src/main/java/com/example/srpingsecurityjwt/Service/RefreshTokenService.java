@@ -1,6 +1,7 @@
 package com.example.srpingsecurityjwt.Service;
 
 import com.example.srpingsecurityjwt.Entity.RefreshToken;
+import com.example.srpingsecurityjwt.Entity.UserEntity;
 import com.example.srpingsecurityjwt.Repositorty.RefreshTokenRepository;
 import com.example.srpingsecurityjwt.Repositorty.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,13 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
     public RefreshToken createRefreshToken(String username) {
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(userRepository.findByUsername(username));
+        RefreshToken refreshToken = refreshTokenRepository.findByUsername(username);
+        if(refreshToken == null){
+            refreshToken = new RefreshToken();
+            UserEntity user = userRepository.findByUsername(username);
+            refreshToken.setUser(user);
+        }
+//        refreshToken.setUser(userRepository.findByUsername(username));
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
         refreshToken = refreshTokenRepository.save(refreshToken);

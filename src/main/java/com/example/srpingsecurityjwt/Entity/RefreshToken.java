@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 
-@Entity(name = "refreshtoken")
+@Entity
+@Table(name = "refreshtoken")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
