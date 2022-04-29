@@ -7,10 +7,13 @@ import lombok.Data;
 public class LoginRespon {
     private String accessToken;
     private String tokenType;
+    private String refreshToken;
 
-    public LoginRespon(String accessToken) {
+    public LoginRespon(String accessToken, String refreshToken) {
         this.accessToken = "Bearer " + accessToken;
         this.tokenType = "Bearer";
+        this.refreshToken = refreshToken;
+
     }
 
 }

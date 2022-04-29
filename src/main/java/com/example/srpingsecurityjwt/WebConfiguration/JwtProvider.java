@@ -3,6 +3,7 @@ package com.example.srpingsecurityjwt.WebConfiguration;
 import com.example.srpingsecurityjwt.Dto.LoginRespon;
 import com.example.srpingsecurityjwt.Entity.UserEntity;
 import com.example.srpingsecurityjwt.Repositorty.CustomDetailService;
+import com.example.srpingsecurityjwt.Repositorty.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,14 +23,19 @@ public class JwtProvider {
     private String JWT_SECRET;
     @Value("${jwt.JWT_EXPIRATION}")
     private int JWT_EXPIRATION;
+    @Autowired
+    UserRepository userRepository;
 
     public String generateToken(CustomDetailService customDetailService){
+       return this.generateTokenByUsername(customDetailService.getUsername());
+    }
+    public String generateTokenByUsername(String Username){
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
-
+        UserEntity userEntity = userRepository.findByUsername(Username);
         return Jwts.builder()
-                .setSubject(Long.toString(customDetailService.getUserEntity().getId()))
-                .claim("username", customDetailService.getUsername())
+                .setSubject(Long.toString(userEntity.getId()))
+                .claim("username", userEntity.getUsername())
                 .claim("role", "ROLE_USER")
                 .setExpiration(expiryDate)
                 .setIssuedAt(new Date())

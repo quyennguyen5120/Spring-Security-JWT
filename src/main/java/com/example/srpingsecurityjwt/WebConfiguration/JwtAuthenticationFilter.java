@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
            try{
                String jwtToken = getJwtFromRequest(request);
-               if(jwtToken != null){
+               if(jwtToken != null && this.validateToken(jwtToken)){
                    String username = jwtProvider.getKeyByValueFromJWT("username", jwtToken);//Giải mã token lấy username
                    CustomDetailService userDetails = (CustomDetailService) userService.loadUserByUsername(username);
                    if(userDetails != null) {
