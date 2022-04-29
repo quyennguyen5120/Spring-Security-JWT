@@ -2,7 +2,9 @@ package com.example.srpingsecurityjwt.WebConfiguration;
 
 import com.example.srpingsecurityjwt.Repositorty.CustomDetailService;
 import com.example.srpingsecurityjwt.Service.UserService;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     JwtProvider jwtProvider;
     @Autowired
     UserService userService;
+    @Value("${jwt.SECRET_KEY}")
+    private String JWT_SECRET;
+    @Value("${jwt.JWT_EXPIRATION}")
+    private int JWT_EXPIRATION;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -58,5 +64,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return token.substring(7);
         }
         return null;
+    }
+
+    public boolean validateToken(String authToken){
+        try{
+            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            return true;
+        }
+        catch (SignatureException e){
+            logger.error("Invalid JWT signature: "+ e.getMessage());
+        }
+        catch (MalformedJwtException e){
+            logger.error("Invalid JWT token: "+ e.getMessage());
+        }
+        catch (ExpiredJwtException e){
+            logger.error("JWT token is expired: "+ e.getMessage());
+        }
+        catch (UnsupportedJwtException e){
+            logger.error("JWT token unsupported: "+ e.getMessage());
+        }
+        catch (IllegalArgumentException e){
+            logger.error("JWT claims string is empty: "+ e.getMessage());
+        }
+        return false;
     }
 }
