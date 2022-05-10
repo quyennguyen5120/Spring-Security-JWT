@@ -38,6 +38,34 @@ INSERT INTO `hibernate_sequence` VALUES (12);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) DEFAULT NULL,
+  `time_send` datetime DEFAULT NULL,
+  `nguoigui_id` bigint DEFAULT NULL,
+  `nguoinhan_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKp7s4iw3a1qkeo8vibemmb2bts` (`nguoigui_id`),
+  KEY `FKlk0wcvertbwu6hbll8lgd15vh` (`nguoinhan_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message`
+--
+
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `refreshtoken`
 --
 
@@ -150,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-10 16:11:33
+-- Dump completed on 2022-05-10 16:28:47
