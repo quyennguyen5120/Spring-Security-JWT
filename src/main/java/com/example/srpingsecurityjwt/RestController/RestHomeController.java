@@ -1,9 +1,12 @@
 package com.example.srpingsecurityjwt.RestController;
 
 import com.example.srpingsecurityjwt.Dto.LoginRespon;
+import com.example.srpingsecurityjwt.Dto.UserDto;
 import com.example.srpingsecurityjwt.Entity.RefreshToken;
+import com.example.srpingsecurityjwt.Entity.RoleEntity;
 import com.example.srpingsecurityjwt.Entity.UserEntity;
 import com.example.srpingsecurityjwt.Repositorty.CustomDetailService;
+import com.example.srpingsecurityjwt.Repositorty.RoleRepository;
 import com.example.srpingsecurityjwt.Repositorty.UserRepository;
 import com.example.srpingsecurityjwt.Service.RefreshTokenService;
 import com.example.srpingsecurityjwt.Service.UserService;
@@ -20,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 public class RestHomeController {
@@ -36,6 +41,9 @@ public class RestHomeController {
     UserRepository userRepository;
     @Autowired
     RefreshTokenService refreshTokenService;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserEntity userEntity){
@@ -67,12 +75,31 @@ public class RestHomeController {
                 .orElseThrow(null);
     }
 
-    @GetMapping("/add")
-    public String addNewAccount(){
-        UserEntity user = new UserEntity(null,"admin",passwordEncoder.encode("admin"), null);
-        userRepository.save(user);
-        return null;
+    @PostMapping("/regis")
+    public ResponseEntity<?> regis(@RequestBody UserEntity request) {
+       UserEntity u = userRepository.findByUsername(request.getUsername());
+       RoleEntity r = roleRepository.findById(2L).get();
+       Set<RoleEntity> roleEntitySet = new HashSet<>();
+        roleEntitySet.add(r);
+        UserDto uz = null;
+       if(u != null){
+           u = new UserEntity();
+           u.setPassword(passwordEncoder.encode(request.getPassword()));
+           u.setUsername(passwordEncoder.encode(request.getUsername()));
+           u.setName(request.getName());
+           u.setEmail(request.getEmail());
+           u.setRoles(roleEntitySet);
+            uz = new UserDto(userRepository.save(u));
+       }
+       return ResponseEntity.ok(uz);
     }
+
+//    @GetMapping("/add")
+//    public String addNewAccount(){
+//        UserEntity user = new UserEntity(null,"admin",passwordEncoder.encode("admin"), null);
+//        userRepository.save(user);
+//        return null;
+//    }
 
     @GetMapping("/auth/test")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -85,6 +112,5 @@ public class RestHomeController {
     public ResponseEntity<?> testz(){
         return ResponseEntity.ok("ROLE_ADMIN");
     }
-
 
 }
