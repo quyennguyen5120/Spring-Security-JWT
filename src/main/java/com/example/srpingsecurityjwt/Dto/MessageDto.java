@@ -17,5 +17,13 @@ public class MessageDto {
     private Long id;
     private String content;
     private UserDto sender;
+    private Date time_send;
+
+    public MessageDto(MessageEntity messageEntity){
+        this.id = messageEntity.getId();
+        this.content = messageEntity.getContent();
+        this.sender = new UserDto(messageEntity.getSender());
+        this.time_send = messageEntity.getTimeSend();
+    }
 
 }

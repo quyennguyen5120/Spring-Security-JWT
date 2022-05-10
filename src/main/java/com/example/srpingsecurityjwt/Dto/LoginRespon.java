@@ -10,7 +10,7 @@ public class LoginRespon {
     private String refreshToken;
 
     public LoginRespon(String accessToken, String refreshToken) {
-        this.accessToken = "Bearer " + accessToken;
+        this.accessToken = accessToken;
         this.tokenType = "Bearer";
         this.refreshToken = refreshToken;
 
