@@ -23,16 +23,9 @@ public class MessageEntity {
     private String content;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private UserEntity nguoigui;
+    private UserEntity sender;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private UserEntity nguoinhan;
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    private Conversations conversations;
 
-    @Column(name = "time_send")
-    private Date timeSend;
-
-    @PrePersist
-    public void prePersist(){
-        this.timeSend = new Date();
-    }
 }

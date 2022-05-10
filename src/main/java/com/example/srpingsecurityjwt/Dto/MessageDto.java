@@ -16,15 +16,6 @@ import java.util.List;
 public class MessageDto {
     private Long id;
     private String content;
-    private UserDto nguoigui;
-    private UserDto nguoinhan;
-    private Date timeSend;
+    private UserDto sender;
 
-    public MessageDto(MessageEntity messageEntity){
-        this.id = messageEntity.getId();
-        this.content = messageEntity.getContent();
-        this.nguoigui = new UserDto(messageEntity.getNguoigui());
-        this.nguoinhan = new UserDto(messageEntity.getNguoinhan());
-        this.timeSend = messageEntity.getTimeSend();
-    }
 }
