@@ -36,7 +36,6 @@ public class RestChatController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomDetailService customDetailService = (CustomDetailService) authentication.getPrincipal();
         UserEntity userEntity = customDetailService.getUserEntity();
-        List<UserEntity> userEntities = userRepository.findAll();
         List<UserDto> userDtoList = userRepository.getAllNotInAuthen(userEntity.getId());
         return userDtoList;
     }
