@@ -85,7 +85,7 @@ public class RestHomeController {
        if(u == null){
            u = new UserEntity();
            u.setPassword(passwordEncoder.encode(request.getPassword()));
-           u.setUsername(passwordEncoder.encode(request.getUsername()));
+           u.setUsername(request.getUsername());
            u.setName(request.getName());
            u.setEmail(request.getEmail());
            u.setRoles(roleEntitySet);
