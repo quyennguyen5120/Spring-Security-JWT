@@ -82,7 +82,7 @@ public class RestHomeController {
        Set<RoleEntity> roleEntitySet = new HashSet<>();
         roleEntitySet.add(r);
         UserDto uz = null;
-       if(u != null){
+       if(u == null){
            u = new UserEntity();
            u.setPassword(passwordEncoder.encode(request.getPassword()));
            u.setUsername(passwordEncoder.encode(request.getUsername()));
