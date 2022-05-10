@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/chat")
+@CrossOrigin
 public class RestChatController {
     @Autowired
     MessageRepository messageRepository;
