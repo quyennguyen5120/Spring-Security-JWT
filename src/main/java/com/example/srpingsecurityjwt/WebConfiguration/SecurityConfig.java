@@ -62,16 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder());
     }
-    @Bean
-    WebConfiguration corsFilter() {
-        WebConfiguration filter = new WebConfiguration();
-        return filter;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http    .addFilterBefore(corsFilter(), SessionManagementFilter.class)
+        http.cors().disable();
+        http
                 .authorizeRequests()
                 .antMatchers("/login", "/add", "/regis").permitAll()
                 .anyRequest().authenticated()
